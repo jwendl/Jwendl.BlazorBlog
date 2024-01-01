@@ -34,6 +34,7 @@ public static class DatabaseUtility
 			var postGenerator = new Faker<Post>()
 				.RuleFor(p => p.Id, postIds++)
 				.RuleFor(p => p.StaticId, f => Guid.NewGuid())
+				.RuleFor(p => p.Title, f => f.Commerce.ProductName())
 				.RuleFor(p => p.Category, f => f.PickRandom(categories))
 				.RuleFor(p => p.Content, f => f.Lorem.Paragraphs(2));
 

@@ -1,0 +1,43 @@
+﻿@using Jwendl.BlazorBlog.Data.Models;
+@using Markdig
+@using Markdig.Prism
+
+@inject IJSRuntime _jsRuntime;
+
+<MudText Typo="Typo.subtitle2">@Post.Title</MudText>
+<MudText Typo="Typo.body1" Class="post-content">
+	@if (!string.IsNullOrWhiteSpace(Post.Content))
+	{
+		var html = Markdown.ToHtml(Post.Content, _markdownPipeline);
+		var markupString = new MarkupString(html);
+		@markupString
+	}
+</MudText>
+
+@code {
+	[Parameter]
+	public Post Post { get; set; }
+
+	static readonly MarkdownPipeline _markdownPipeline = new MarkdownPipelineBuilder()
+		.UseAdvancedExtensions()
+		.UseDiagrams()
+		.UseEmojiAndSmiley()
+		.UseMathematics()
+		.UseMediaLinks()
+		.UsePipeTables()
+		.Build();
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (_jsRuntime is not null)
+		{
+			if (firstRender)
+			{
+				await _jsRuntime.InvokeVoidAsync("JsFunctions.MermaidInitialize");
+			}
+
+			await _jsRuntime.InvokeVoidAsync("JsFunctions.MermaidRender");
+			await _jsRuntime.InvokeVoidAsync("JsFunctions.PrismRender");
+		}
+	}
+}

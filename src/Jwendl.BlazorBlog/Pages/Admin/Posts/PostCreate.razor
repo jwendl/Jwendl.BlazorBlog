@@ -1,0 +1,53 @@
+﻿@page "/admin/posts/create"
+
+@using Jwendl.BlazorBlog.Components
+@using Jwendl.BlazorBlog.Data
+@using Jwendl.BlazorBlog.Data.Models
+@using Jwendl.BlazorBlog.Validators.Posts
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<BlogContext> _dbContextFactory
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<MudForm Model="@_post" @ref="_mudForm" Validation="@(_postValidator.ValidateValue)" ValidationDelay="0">
+	<MudGrid>
+		<MudItem xs="12" sm="7">
+			<MudCard>
+				<MudCardContent>
+					<MudTextField Label="Title" HelperText="Post Title" @bind-Value="_post.Title" For="@(() => _post.Title)" Immediate="true" />
+					<MudTextField AutoGrow Label="Content" HelperText="Post Content (in Markdown)" @bind-Value="_post.Content" For="@(() => _post.Content)" Immediate="true" />
+				</MudCardContent>
+				<MudCardActions>
+					<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await CreatePost())">Create Post</MudButton>
+				</MudCardActions>
+			</MudCard>
+		</MudItem>
+		<MudItem xs="12" sm="5">
+			<MudPaper Class="pa-4 mud-height-full">
+				<MudText Typo="Typo.subtitle2">Post Preview</MudText>
+				<PostDisplayItem Post="@_post" />
+			</MudPaper>
+		</MudItem>
+	</MudGrid>
+</MudForm>
+
+@code {
+	MudForm _mudForm;
+	Post _post = new Post();
+	PostValidator _postValidator = new PostValidator();
+	bool _success;
+
+	async Task CreatePost()
+	{
+		await _mudForm.Validate();
+
+		if (_mudForm.IsValid)
+		{
+			_success = true;
+			var blogContext = await _dbContextFactory.CreateDbContextAsync();
+			await blogContext.Posts.AddAsync(_post);
+			NavigationManager.NavigateTo("/admin/posts");
+		}
+	}
+}
