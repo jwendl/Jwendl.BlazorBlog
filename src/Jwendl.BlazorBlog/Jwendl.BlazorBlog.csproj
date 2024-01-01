@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+     <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.16.0" />
+    <PackageReference Include="MudBlazor" Version="6.11.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Source\GitHub\Jwendl.BlazorBlog\src\Jwendl.BlazorBlog\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Source\GitHub\Jwendl.BlazorBlog\src\Jwendl.BlazorBlog\.editorconfig" />
+  </ItemGroup>
+</Project>

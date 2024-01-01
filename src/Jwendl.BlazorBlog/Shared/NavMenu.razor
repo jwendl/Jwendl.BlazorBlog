@@ -1,0 +1,19 @@
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
+    <AuthorizeView Policy="Blog Administrator">
+        <MudNavGroup Title="Administration" Expanded="true">
+            <MudNavLink Href="/admin/index" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+            <MudNavLink Href="/admin/posts" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Create">Posts</MudNavLink>
+            <MudNavLink Href="/users" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Users</MudNavLink>
+        </MudNavGroup>
+    </AuthorizeView>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="/MicrosoftIdentity/Account/SignOut">Log out (@context.User.Identity.Name)</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="/MicrosoftIdentity/Account/SignIn">Log in</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudNavMenu>

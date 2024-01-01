@@ -1,0 +1,41 @@
+﻿@using Jwendl.BlazorBlog.Options
+@using Microsoft.Extensions.Options
+
+@inherits LayoutComponentBase
+
+@inject IOptions<BlogOptions> _blogOptions
+
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+	<MudAppBar>
+		<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+		@_blogOptions.Value.Title
+		<MudSpacer />
+		<MudToggleIconButton @bind-Toggled="@_isDarkMode" ToggledIcon="@Icons.Material.Filled.Light" Icon="@Icons.Material.Filled.NightlightRound" Color="Color.Inherit" />
+	</MudAppBar>
+
+	<MudDrawer @bind-Open="@_drawerOpen">
+		<NavMenu />
+	</MudDrawer>
+
+	<MudMainContent>
+		<MudContainer MaxWidth="MaxWidth.Medium">
+			@Body
+		</MudContainer>
+	</MudMainContent>
+</MudLayout>
+
+@code {
+	bool _drawerOpen = true;
+
+	private MudTheme _theme = new();
+	bool _isDarkMode = true;
+
+	void DrawerToggle()
+	{
+		_drawerOpen = !_drawerOpen;
+	}
+}
