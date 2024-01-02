@@ -1,4 +1,3 @@
-using Jwendl.BlazorBlog;
 using Jwendl.BlazorBlog.Data;
 using Jwendl.BlazorBlog.Options;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -13,16 +12,40 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configurationManager = builder.Configuration;
-var downstreamApiScopes = configurationManager.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
 var connectionString = configurationManager.GetValue<string>("Database:ConnectionString");
 
-builder.Services.Configure<BlogOptions>(configurationManager.GetSection(""));
+builder.Services.Configure<BlogOptions>(configurationManager.GetSection("Authentication:Google:ClientId"));
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-	.AddMicrosoftIdentityWebApp(configurationManager.GetSection("AzureAd"))
-		.EnableTokenAcquisitionToCallDownstreamApi(downstreamApiScopes)
-			.AddMicrosoftGraph(configurationManager.GetSection("DownstreamApi"))
-			.AddInMemoryTokenCaches();
+	.AddMicrosoftAccount(microsoftOptions =>
+	{
+		microsoftOptions.ClientId = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientId");
+		microsoftOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientSecret");
+	})
+	.AddFacebook(facebookOptions =>
+	{
+		facebookOptions.AppId = configurationManager.GetValue<string>("Authentication:Facebook:AppId");
+		facebookOptions.AppSecret = configurationManager.GetValue<string>("Authentication:Facebook:AppSecret");
+	})
+	.AddTwitter(twitterOptions =>
+	{
+		twitterOptions.ConsumerKey = configurationManager.GetValue<string>("Authentication:Twitter:ClientId");
+		twitterOptions.ConsumerSecret = configurationManager.GetValue<string>("Authentication:Twitter:ClientSecret");
+	})
+	.AddGoogle(googleOptions =>
+	{
+		googleOptions.ClientId = configurationManager.GetValue<string>("Authentication:Google:ClientId");
+		googleOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:Google:ClientSecret");
+	})
+	.AddMicrosoftIdentityWebApp(azureAdOptions =>
+	{
+		azureAdOptions.Instance = configurationManager.GetValue<string>("Authentication:AzureAd:Instance");
+		azureAdOptions.CallbackPath = configurationManager.GetValue<string>("Authentication:AzureAd:CallbackPath");
+		azureAdOptions.TenantId = configurationManager.GetValue<string>("Authentication:AzureAd:TenantId");
+		azureAdOptions.Domain = configurationManager.GetValue<string>("Authentication:AzureAd:Domain");
+		azureAdOptions.ClientId = configurationManager.GetValue<string>("Authentication:AzureAd:ClientId");
+		azureAdOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:AzureAd:ClientSecret");
+	});
 
 builder.Services.AddControllersWithViews()
 	.AddMicrosoftIdentityUI();

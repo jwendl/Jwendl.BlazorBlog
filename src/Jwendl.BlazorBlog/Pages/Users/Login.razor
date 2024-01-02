@@ -1,0 +1,10 @@
+﻿@page "/login"
+
+@inject NavigationManager _navigationManager
+
+@code {
+	async Task LoginMicrosoftEntra()
+	{
+		_navigationManager.NavigateTo("/MicrosoftIdentity/Account/SignIn");
+	}
+}

@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jwendl.BlazorBlog.Data.Models;
 
-public class Category
+public class Page
 {
 	public int Id { get; set; }
 
 	public Guid StaticId { get; set; }
 
-	public string Name { get; set; }
+	public string Title { get; set; }
 
-	public string Description { get; set; }
+	public int UserId { get; set; }
 
-	public List<Post> Posts { get; } = [];
+	public User User { get; set; }
+
+	public string Content { get; set; }
 }

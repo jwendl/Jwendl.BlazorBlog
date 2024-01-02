@@ -7,7 +7,7 @@
 @using Microsoft.EntityFrameworkCore
 
 @inject IDbContextFactory<BlogContext> _dbContextFactory
-@inject NavigationManager NavigationManager
+@inject NavigationManager _navigationManager
 @attribute [Authorize]
 
 <MudForm Model="@_post" @ref="_mudForm" Validation="@(_postValidator.ValidateValue)" ValidationDelay="0">
@@ -45,9 +45,14 @@
 		if (_mudForm.IsValid)
 		{
 			_success = true;
+
 			var blogContext = await _dbContextFactory.CreateDbContextAsync();
+			_post.StaticId = Guid.NewGuid();
+
 			await blogContext.Posts.AddAsync(_post);
-			NavigationManager.NavigateTo("/admin/posts");
+			await blogContext.SaveChangesAsync();
+
+			_navigationManager.NavigateTo("/admin/posts");
 		}
 	}
 }
