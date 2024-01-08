@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Jwendl.BlazorBlog.Data.Models;
+﻿namespace Jwendl.BlazorBlog.Data.Blog.Models;
 
 public class PostTag
 {

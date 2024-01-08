@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jwendl.BlazorBlog.Data.Models;
+namespace Jwendl.BlazorBlog.Data.Blog.Models;
 
 public class User
 {

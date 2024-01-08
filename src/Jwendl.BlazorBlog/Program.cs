@@ -1,7 +1,12 @@
+using Jwendl.BlazorBlog.Components.Account;
 using Jwendl.BlazorBlog.Data;
+using Jwendl.BlazorBlog.Data.Blog;
+using Jwendl.BlazorBlog.Data.Identity;
+using Jwendl.BlazorBlog.Data.Identity.Models;
 using Jwendl.BlazorBlog.Options;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +17,10 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configurationManager = builder.Configuration;
-var connectionString = configurationManager.GetValue<string>("Database:ConnectionString");
+var blogConnectionString = configurationManager.GetValue<string>("Database:BlogConnectionString");
+var userConnectionString = configurationManager.GetValue<string>("Database:UserConnectionString");
 
-builder.Services.Configure<BlogOptions>(configurationManager.GetSection("Authentication:Google:ClientId"));
+builder.Services.Configure<BlogOptions>(configurationManager.GetSection("Blog"));
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 	.AddMicrosoftAccount(microsoftOptions =>
@@ -50,6 +56,8 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews()
 	.AddMicrosoftIdentityUI();
 
+builder.Services.AddScoped<IdentityRedirectManager>();
+
 builder.Services.AddAuthorization(options =>
 {
 	options.AddPolicy("Blog Administrator", policy =>
@@ -61,15 +69,32 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddDbContextFactory<BlogContext>(options =>
 {
-	if (string.IsNullOrWhiteSpace(connectionString))
+	if (string.IsNullOrWhiteSpace(blogConnectionString))
 	{
 		options.UseInMemoryDatabase("Blog");
 	}
 	else
 	{
-		options.UseSqlServer(connectionString);
+		options.UseSqlServer(blogConnectionString);
 	}
 });
+
+builder.Services.AddDbContextFactory<IdentityContext>(options =>
+{
+	if (string.IsNullOrWhiteSpace(userConnectionString))
+	{
+		options.UseInMemoryDatabase("User");
+	}
+	else
+	{
+		options.UseSqlServer(userConnectionString);
+	}
+});
+
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+	.AddEntityFrameworkStores<IdentityContext>()
+	.AddSignInManager()
+	.AddDefaultTokenProviders();
 
 builder.Services.AddMudServices();
 
@@ -79,7 +104,7 @@ builder.Services.AddServerSideBlazor()
 
 var app = builder.Build();
 
-if (string.IsNullOrEmpty(connectionString))
+if (string.IsNullOrEmpty(blogConnectionString))
 {
 	await using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope();
 	var options = scope.ServiceProvider.GetRequiredService<DbContextOptions<BlogContext>>();

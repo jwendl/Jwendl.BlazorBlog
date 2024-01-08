@@ -1,9 +1,9 @@
-﻿using Jwendl.BlazorBlog.Data.Models;
+﻿using Jwendl.BlazorBlog.Data.Blog.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
 
-namespace Jwendl.BlazorBlog.Data;
+namespace Jwendl.BlazorBlog.Data.Blog;
 
 public class BlogContext(DbContextOptions<BlogContext> options)
 	: DbContext(options)

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jwendl.BlazorBlog.Data.Models;
+namespace Jwendl.BlazorBlog.Data.Blog.Models;
 
 public class Category
 {

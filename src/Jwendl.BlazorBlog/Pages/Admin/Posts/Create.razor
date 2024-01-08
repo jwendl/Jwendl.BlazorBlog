@@ -1,8 +1,8 @@
 ﻿@page "/admin/posts/create"
 
 @using Jwendl.BlazorBlog.Components
-@using Jwendl.BlazorBlog.Data
-@using Jwendl.BlazorBlog.Data.Models
+@using Jwendl.BlazorBlog.Data.Blog
+@using Jwendl.BlazorBlog.Data.Blog.Models
 @using Jwendl.BlazorBlog.Validators.Posts
 @using Microsoft.EntityFrameworkCore
 
@@ -35,7 +35,7 @@
 @code {
 	MudForm _mudForm;
 	Post _post = new Post();
-	PostValidator _postValidator = new PostValidator();
+	PostValidator _postValidator = new();
 	bool _success;
 
 	async Task CreatePost()

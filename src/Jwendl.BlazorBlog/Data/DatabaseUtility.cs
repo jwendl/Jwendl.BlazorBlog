@@ -1,5 +1,6 @@
 ﻿using Bogus;
-using Jwendl.BlazorBlog.Data.Models;
+using Jwendl.BlazorBlog.Data.Blog;
+using Jwendl.BlazorBlog.Data.Blog.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

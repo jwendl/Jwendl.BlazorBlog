@@ -1,10 +1,56 @@
-﻿@page "/login"
+﻿@page "/users/login"
+
+@using Jwendl.BlazorBlog.Components.Account
+@using Jwendl.BlazorBlog.Data.Identity.Models
+@using Jwendl.BlazorBlog.Models
+@using Jwendl.BlazorBlog.Validators.Login
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity;
 
 @inject NavigationManager _navigationManager
+@inject IdentityRedirectManager _identityRedirectManager
+@inject SignInManager<ApplicationUser> _signInManager
+
+<MudGrid>
+	<MudItem md="4">
+		<MudForm Model="@_formPostRedirectionUrl" @ref="_mudForm" Validation="@(_formPostRedirectionValidator.ValidateValue)" ValidationDelay="0">
+			<MudStack AlignItems="AlignItems.Start" Justify="Justify.Center">
+				<MudHidden @bind-Value="_formPostRedirectionUrl.ReturnUrl" />
+				<MudButton Href="/MicrosoftIdentity/Account/SignIn" StartIcon="@Icons.Custom.Brands.MicrosoftAzure" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true">Microsoft Entra</MudButton>
+				@foreach (var externalLogin in _externalLogins)
+				{
+					<MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@BuildIconName(externalLogin.Name)" OnClick="@(() => PerformExternalLogin(externalLogin.Name))" Size="Size.Large" FullWidth="true">@externalLogin.DisplayName</MudButton>
+				}
+			</MudStack>
+		</MudForm>
+	</MudItem>
+</MudGrid>
 
 @code {
-	async Task LoginMicrosoftEntra()
+	MudForm _mudForm;
+	AuthenticationScheme[] _externalLogins = [];
+	FormPostRedirectionUrl _formPostRedirectionUrl = new();
+	FormPostRedirectionValidator _formPostRedirectionValidator = new();
+	bool _success;
+
+	void PerformExternalLogin(string externalLoginName)
 	{
-		_navigationManager.NavigateTo("/MicrosoftIdentity/Account/SignIn");
+		var properties = _signInManager.ConfigureExternalAuthenticationProperties(externalLoginName, _formPostRedirectionUrl.ReturnUrl);
+	}
+
+	string BuildIconName(string externalLoginName)
+	{
+		switch (externalLoginName)
+		{
+			case "Microsoft":
+				return Icons.Custom.Brands.Microsoft;
+		}
+
+		return Icons.Material.Filled.QuestionMark;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		_externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
 	}
 }
