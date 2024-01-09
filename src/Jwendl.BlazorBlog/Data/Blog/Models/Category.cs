@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Jwendl.BlazorBlog.Data.Blog.Models;
+﻿namespace Jwendl.BlazorBlog.Data.Blog.Models;
 
 public class Category
 {
@@ -9,9 +6,9 @@ public class Category
 
 	public Guid StaticId { get; set; }
 
-	public string Name { get; set; }
+	public string Name { get; set; } = default!;
 
-	public string Description { get; set; }
+	public string Description { get; set; } = default!;
 
 	public List<Post> Posts { get; } = [];
 }

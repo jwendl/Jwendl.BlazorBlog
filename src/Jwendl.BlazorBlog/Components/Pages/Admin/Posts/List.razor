@@ -1,0 +1,65 @@
+﻿@page "/admin/posts"
+
+@using Jwendl.BlazorBlog.Data.Blog
+@using Jwendl.BlazorBlog.Data.Blog.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<BlogContext> _dbContextFactory
+@attribute [Authorize(Policy = "Blog Administrator")]
+
+<MudNavLink Href="/admin/posts/create" Icon="@Icons.Material.Filled.Create">Create Post</MudNavLink>
+
+<MudDataGrid Items="@posts" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+	<ToolBarContent>
+		<MudText Typo="Typo.h6">Manage Posts</MudText>
+		<MudSpacer />
+		<MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	<Columns>
+		<PropertyColumn Property="x => x.StaticId" Title="Static Id" />
+		<PropertyColumn Property="x => x.Title" Title="Title" />
+		<TemplateColumn CellClass="d-flex justify-end">
+			<CellTemplate>
+				<MudStack Row>
+					<MudNavLink Href="@($"/admin/posts/edit/{context.Item.StaticId}")" Title="Edit Post" Icon="@Icons.Material.Filled.EditNote" />
+					<MudNavLink Href="@($"/admin/posts/delete/{context.Item.StaticId}")" Title="Delete Post" Icon="@Icons.Material.Filled.Delete" />
+				</MudStack>
+			</CellTemplate>
+		</TemplateColumn>
+	</Columns>
+	<PagerContent>
+		<MudDataGridPager T="Post" />
+	</PagerContent>
+</MudDataGrid>
+
+@code {
+	private IEnumerable<Post> posts = [];
+	private string searchString = string.Empty;
+
+	private Func<Post, bool> _quickFilter => x =>
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+		{
+			return true;
+		}
+
+		if (x.StaticId.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+		{
+			return true;
+		}
+
+		if (!string.IsNullOrWhiteSpace(x.Title) && x.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+		{
+			return true;
+		}
+
+		return false;
+	};
+
+	protected override async Task OnInitializedAsync()
+	{
+		using var blogContext = await _dbContextFactory.CreateDbContextAsync();
+		posts = await blogContext.Posts.ToListAsync();
+	}
+}

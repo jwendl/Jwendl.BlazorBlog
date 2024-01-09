@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Jwendl.BlazorBlog.Data.Blog.Models;
+﻿namespace Jwendl.BlazorBlog.Data.Blog.Models;
 
 public class Tag
 {

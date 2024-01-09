@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jwendl.BlazorBlog", "Jwendl.BlazorBlog\Jwendl.BlazorBlog.csproj", "{354DC737-8763-48B7-BC92-DF66ADB0E153}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jwendl.BlazorBlog", "Jwendl.BlazorBlog\Jwendl.BlazorBlog.csproj", "{AA6B5DE8-BBFD-46F8-8DEB-D2C26A5481AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{354DC737-8763-48B7-BC92-DF66ADB0E153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{354DC737-8763-48B7-BC92-DF66ADB0E153}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{354DC737-8763-48B7-BC92-DF66ADB0E153}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{354DC737-8763-48B7-BC92-DF66ADB0E153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA6B5DE8-BBFD-46F8-8DEB-D2C26A5481AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA6B5DE8-BBFD-46F8-8DEB-D2C26A5481AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA6B5DE8-BBFD-46F8-8DEB-D2C26A5481AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA6B5DE8-BBFD-46F8-8DEB-D2C26A5481AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A85A3EA3-D80B-40EA-9B67-DEC7A1EBC525}
+		SolutionGuid = {39964574-EF6E-4B6D-94F5-9217C0FB97A4}
 	EndGlobalSection
 EndGlobal

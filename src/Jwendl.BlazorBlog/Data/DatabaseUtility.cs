@@ -27,6 +27,7 @@ public static class DatabaseUtility
 				.RuleFor(c => c.Name, f => f.Commerce.Categories(1).First());
 
 			var categories = categoryGenerator
+				.RuleFor(c => c.Description, f => f.Lorem.Paragraph())
 				.Generate(10);
 
 			await blogContext.Categories.AddRangeAsync(categories);
