@@ -1,5 +1,5 @@
 using Jwendl.BlazorBlog.Components;
-using Jwendl.BlazorBlog.Components.Account;
+using Jwendl.BlazorBlog.Components.User.Identity;
 using Jwendl.BlazorBlog.Data;
 using Jwendl.BlazorBlog.Data.Blog;
 using Jwendl.BlazorBlog.Data.Identity;
@@ -18,7 +18,7 @@ var blogConnectionString = configurationManager.GetValue<string>("Database:BlogC
 var userConnectionString = configurationManager.GetValue<string>("Database:UserConnectionString") ?? throw new InvalidOperationException("Connection string 'Database:UserConnectionString' not found.");
 
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+	.AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -29,67 +29,66 @@ builder.Services.AddControllersWithViews()
 	.AddMicrosoftIdentityUI();
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftAccount(microsoftOptions =>
-    {
-        microsoftOptions.ClientId = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientId") ?? string.Empty;
-        microsoftOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientSecret") ?? string.Empty;
-    })
-    .AddFacebook(facebookOptions =>
-    {
-        facebookOptions.AppId = configurationManager.GetValue<string>("Authentication:Facebook:AppId") ?? string.Empty;
-        facebookOptions.AppSecret = configurationManager.GetValue<string>("Authentication:Facebook:AppSecret") ?? string.Empty;
-    })
-    .AddTwitter(twitterOptions =>
-    {
-        twitterOptions.ConsumerKey = configurationManager.GetValue<string>("Authentication:Twitter:ClientId") ?? string.Empty;
-        twitterOptions.ConsumerSecret = configurationManager.GetValue<string>("Authentication:Twitter:ClientSecret") ?? string.Empty;
-    })
-    .AddGoogle(googleOptions =>
-    {
-        googleOptions.ClientId = configurationManager.GetValue<string>("Authentication:Google:ClientId") ?? string.Empty;
-        googleOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:Google:ClientSecret") ?? string.Empty;
-    })
-    .AddMicrosoftIdentityWebApp(azureAdOptions =>
-    {
-        azureAdOptions.Instance = configurationManager.GetValue<string>("Authentication:AzureAd:Instance") ?? string.Empty;
-        azureAdOptions.CallbackPath = configurationManager.GetValue<string>("Authentication:AzureAd:CallbackPath");
-        azureAdOptions.TenantId = configurationManager.GetValue<string>("Authentication:AzureAd:TenantId");
-        azureAdOptions.Domain = configurationManager.GetValue<string>("Authentication:AzureAd:Domain");
-        azureAdOptions.ClientId = configurationManager.GetValue<string>("Authentication:AzureAd:ClientId");
-        azureAdOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:AzureAd:ClientSecret");
-    });
+	.AddMicrosoftAccount(microsoftOptions =>
+	{
+		microsoftOptions.ClientId = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientId") ?? string.Empty;
+		microsoftOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:MicrosoftAccount:ClientSecret") ?? string.Empty;
+	})
+	.AddFacebook(facebookOptions =>
+	{
+		facebookOptions.AppId = configurationManager.GetValue<string>("Authentication:Facebook:AppId") ?? string.Empty;
+		facebookOptions.AppSecret = configurationManager.GetValue<string>("Authentication:Facebook:AppSecret") ?? string.Empty;
+	})
+	.AddTwitter(twitterOptions =>
+	{
+		twitterOptions.ConsumerKey = configurationManager.GetValue<string>("Authentication:Twitter:ClientId") ?? string.Empty;
+		twitterOptions.ConsumerSecret = configurationManager.GetValue<string>("Authentication:Twitter:ClientSecret") ?? string.Empty;
+	})
+	.AddGoogle(googleOptions =>
+	{
+		googleOptions.ClientId = configurationManager.GetValue<string>("Authentication:Google:ClientId") ?? string.Empty;
+		googleOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:Google:ClientSecret") ?? string.Empty;
+	})
+	.AddMicrosoftIdentityWebApp(azureAdOptions =>
+	{
+		azureAdOptions.Instance = configurationManager.GetValue<string>("Authentication:AzureAd:Instance") ?? string.Empty;
+		azureAdOptions.CallbackPath = configurationManager.GetValue<string>("Authentication:AzureAd:CallbackPath");
+		azureAdOptions.TenantId = configurationManager.GetValue<string>("Authentication:AzureAd:TenantId");
+		azureAdOptions.Domain = configurationManager.GetValue<string>("Authentication:AzureAd:Domain");
+		azureAdOptions.ClientId = configurationManager.GetValue<string>("Authentication:AzureAd:ClientId");
+		azureAdOptions.ClientSecret = configurationManager.GetValue<string>("Authentication:AzureAd:ClientSecret");
+	});
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Blog Administrator", policy =>
-    {
-        policy.RequireClaim("groups", "fbdec060-6cec-4b99-bc5f-1178d9b44c35");
-    });
-    options.FallbackPolicy = options.DefaultPolicy;
+	options.AddPolicy("Blog Administrator", policy =>
+	{
+		policy.RequireClaim("groups", "fbdec060-6cec-4b99-bc5f-1178d9b44c35");
+	});
 });
 
 builder.Services.AddDbContextFactory<BlogContext>(options =>
 {
-    if (string.IsNullOrWhiteSpace(blogConnectionString))
-    {
-        options.UseInMemoryDatabase("Blog");
-    }
-    else
-    {
-        options.UseSqlServer(blogConnectionString);
-    }
+	if (string.IsNullOrWhiteSpace(blogConnectionString))
+	{
+		options.UseInMemoryDatabase("Blog");
+	}
+	else
+	{
+		options.UseSqlServer(blogConnectionString);
+	}
 });
 
 builder.Services.AddDbContextFactory<IdentityContext>(options =>
 {
-    if (string.IsNullOrWhiteSpace(userConnectionString))
-    {
-        options.UseInMemoryDatabase("User");
-    }
-    else
-    {
-        options.UseSqlServer(userConnectionString);
-    }
+	if (string.IsNullOrWhiteSpace(userConnectionString))
+	{
+		options.UseInMemoryDatabase("User");
+	}
+	else
+	{
+		options.UseSqlServer(userConnectionString);
+	}
 });
 
 builder.Services.AddMudServices();
@@ -97,9 +96,9 @@ builder.Services.AddMudServices();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+	.AddEntityFrameworkStores<IdentityContext>()
+	.AddSignInManager()
+	.AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -112,12 +111,12 @@ if (string.IsNullOrEmpty(blogConnectionString))
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+	app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    app.UseHsts();
+	app.UseExceptionHandler("/Error", createScopeForErrors: true);
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -129,7 +128,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+	.AddInteractiveServerRenderMode();
 
 app.MapAdditionalIdentityEndpoints();
 

@@ -5,8 +5,9 @@
 @inject IJSRuntime jsRuntime;
 
 <MudText Typo="Typo.subtitle2">@Post.Title</MudText>
-	<MudText Typo="Typo.body1" Class="post-content">
-		@if (!string.IsNullOrWhiteSpace(Post.Content))
+
+<MudText Typo="Typo.body1" Class="post-content">
+	@if (!string.IsNullOrWhiteSpace(Post.Content))
 	{
 		var html = Markdown.ToHtml(Post.Content, _markdownPipeline);
 		var markupString = new MarkupString(html);

@@ -1,5 +1,6 @@
-﻿@page "/Account/Manage/ExternalLogins"
+﻿@page "/account/manage/external"
 
+@using Jwendl.BlazorBlog.Components.User.Identity
 @using Jwendl.BlazorBlog.Data.Identity.Models
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
@@ -12,7 +13,6 @@
 
 <PageTitle>Manage your external logins</PageTitle>
 
-<StatusMessage />
 @if (currentLogins?.Count > 0)
 {
     <h3>Registered Logins</h3>

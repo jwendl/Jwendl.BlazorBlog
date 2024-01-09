@@ -30,4 +30,12 @@
     <PackageReference Include="WebStoating.Markdig.Prism" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Source\GitHub\Jwendl.BlazorBlog\src\Jwendl.BlazorBlog\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Source\GitHub\Jwendl.BlazorBlog\src\Jwendl.BlazorBlog\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 using Jwendl.BlazorBlog.Data.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Jwendl.BlazorBlog.Components.Account;
+namespace Jwendl.BlazorBlog.Components.User.Identity;
 
 internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
 {

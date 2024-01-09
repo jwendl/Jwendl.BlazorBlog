@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
+using Jwendl.BlazorBlog.Components.Shared.Validators;
 using Jwendl.BlazorBlog.Data.Blog.Models;
 
-namespace Jwendl.BlazorBlog.Validators.Posts;
+namespace Jwendl.BlazorBlog.Components.Admin.Posts.Validators;
 
 public class PostValidator
 	: BaseValidator<Post>

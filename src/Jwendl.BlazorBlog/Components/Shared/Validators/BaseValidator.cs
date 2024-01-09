@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Jwendl.BlazorBlog.Validators;
+namespace Jwendl.BlazorBlog.Components.Shared.Validators;
 
 public class BaseValidator<T>
 	: AbstractValidator<T>
