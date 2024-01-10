@@ -1,3 +1,4 @@
+using Jwendl.BlazorBlog.Components.User.Account.Models;
 using Jwendl.BlazorBlog.Components.User.Account.Pages;
 using Jwendl.BlazorBlog.Data.Identity.Models;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Jwendl.BlazorBlog.Components.User.Identity;
 
@@ -16,23 +18,20 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
 		var accountGroup = endpoints.MapGroup("/account");
 
-		accountGroup.MapGet("/account/external/challenge", (
+		accountGroup.MapPost("/external/challenge", (
 			HttpContext context,
 			[FromServices] SignInManager<ApplicationUser> signInManager,
-			[FromQuery] string provider,
-			[FromQuery] string returnUrl) =>
+			[FromBody] ChallengeInput challengeInput) =>
 		{
 			IEnumerable<KeyValuePair<string, StringValues>> query = [
-				new("ReturnUrl", returnUrl),
-				new("Action", ExternalLogin.LoginCallbackAction)];
+				new("ReturnUrl", challengeInput.RedirectUrl),
+				new("Action", "LoginCallback")];
 
-			var redirectUrl = UriHelper.BuildRelative(
-				context.Request.PathBase,
-				"/user/account/external/login",
-				QueryString.Create(query));
+			var redirectUrl = UriHelper.BuildRelative(context.Request.PathBase, "/user/account/external/login", QueryString.Create(query));
 
-			var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-			return TypedResults.Challenge(properties, [provider]);
+			var properties = signInManager.ConfigureExternalAuthenticationProperties(challengeInput.ExternalProviderName, redirectUrl);
+
+			return TypedResults.Challenge(properties, [challengeInput.ExternalProviderName]);
 		});
 
 		accountGroup.MapPost("/Logout", async (

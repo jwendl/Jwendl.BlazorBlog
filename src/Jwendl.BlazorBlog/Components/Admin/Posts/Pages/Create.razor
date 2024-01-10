@@ -11,7 +11,7 @@
 @inject NavigationManager _navigationManager
 @attribute [Authorize(Policy = "Blog Administrator")]
 
-<MudForm Model="@post" @ref="mudForm" Validation="@(postValidator.ValidateValue)" ValidationDelay="0">
+<MudForm Model="@post" @ref="@mudForm" Validation="@(postValidator.ValidateValue)" ValidationDelay="0">
 	<MudGrid>
 		<MudItem xs="12" sm="7">
 			<MudCard>
